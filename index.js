@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
-
+import profileRoutes from "./routes/profile.js";
 dotenv.config();
 
 const app = express();
@@ -23,6 +23,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
+app.use("/profile", profileRoutes);
 
 app.listen(4000, "0.0.0.0", () =>
   console.log("Server running on port 4000")
