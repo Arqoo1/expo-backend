@@ -6,16 +6,12 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import profileRoutes from "./routes/profile.js";
+
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
 
 app.get("/", (req, res) => {
   res.json({ message: "API working!" });
@@ -25,6 +21,17 @@ app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
 app.use("/profile", profileRoutes);
 
-app.listen(4000, "0.0.0.0", () =>
-  console.log("Server running on port 4000")
-);
+
+if (process.env.NODE_ENV !== "test") {
+  mongoose
+    .connect(process.env.MONGO_URI)
+    .then(() => console.log("MongoDB connected"))
+    .catch((err) => console.log(err));
+
+  app.listen(4000, "0.0.0.0", () =>
+    console.log("Server running on port 4000")
+  );
+}
+
+export default app;
+
